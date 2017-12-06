@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration debug="false">
+
+    <!--设置日志目录-->
+    <property name="LOG_HOME"
+              value="${user.dir}/logs"/>
+    <!--设置日志名-->
+    <property name="LOG_NAME" value="qqpay"/>
+
+    <!--设置应用名-->
+    <contextName>proxy</contextName>
+
+    <!--获得当前日期-->
+    <timestamp key="dayStr" datePattern="yyyyMMdd"/>
+
+
+    <!--日志输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_HOME}/${LOG_NAME}_info_%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+    </root>
+
+    <!--错误日志对像-->
+    <logger name="com.fshows.proxy" level="info">
+        <appender-ref ref="info"/>
+    </logger>
+</configuration>
